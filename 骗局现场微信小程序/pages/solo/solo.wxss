@@ -1,0 +1,67 @@
+.ending { text-align: center; padding: 52rpx 30rpx; }.emoji { font-size: 90rpx; margin: 16rpx 0; }.card-title { font-size: 34rpx; font-weight: 800; line-height: 1.42; }.wide { width: 100%; margin-top: 24rpx; }.timeline { display: flex; align-items: center; padding: 25rpx 8rpx 8rpx; }.time-dot { width: 42rpx; height: 42rpx; border-radius: 50%; background: #285E47; border: 2rpx solid #C8A85B; text-align: center; line-height: 42rpx; color: #FFF9E9; flex: none; }.time-line { height: 4rpx; background: #C8B47E; width: 52rpx; margin: 0 16rpx; }.time-label { color: #806F4B; font-size: 24rpx; }.status { display: flex; justify-content: space-between; color: #66582F; font-size: 23rpx; font-weight: 800; }.clue-card { border-left: 8rpx solid #C59B43; }.prompt { color: #3F513F; font-size: 29rpx; font-weight: 650; line-height: 1.65; }.choice-label { font-size: 23rpx; color: #887958; margin-top: 25rpx; }.choice { width: 100%; text-align: left; background: #FFFDF7; border: 2rpx solid #D4C39B; padding: 25rpx; border-radius: 14rpx; margin-top: 16rpx; color: #334F3B; line-height: 1.55; font-size: 27rpx; }.choice-kind { color: #285E47; font-size: 21rpx; font-weight: 800; letter-spacing: 1rpx; margin-bottom: 7rpx; }.choice.caution { border-color: #D6AE47; background: #FFF4D8; }.choice.caution .choice-kind { color: #A87913; }.choice.risk { border-color: #D16348; background: #FFF0E9; }.choice.risk .choice-kind { color: #B44F39; }.consequence.caution { border-color: #D6AE47; }.consequence.risk { border-color: #D16348; }.ledger { display: flex; justify-content: space-between; color: #805B32; background: #F7E9C9; margin-top: 24rpx; padding: 18rpx; border-radius: 12rpx; font-size: 23rpx; }.result { text-align: center; }.result-number { color: #C4543D; font-size: 44rpx; font-weight: 850; margin: 20rpx 0; }.lesson, .fact, .rewind-rule { background: #F5ECD5; color: #4A5E47; padding: 20rpx; border-radius: 12rpx; line-height: 1.7; margin: 22rpx 0; text-align: left; font-size: 26rpx; }.fact { background: #F9F1DF; color: #665C45; }.rewind-rule { border: 2rpx dashed #C6A14A; background: #FFF8E8; }.decision { text-align: left; padding: 17rpx 0; border-bottom: 1rpx solid #DECDA9; font-size: 25rpx; line-height: 1.55; }.decision-title { color: #78662E; font-size: 22rpx; font-weight: 700; margin-bottom: 4rpx; }
+.status { padding: 12rpx 16rpx; background: #F6E8C2; border: 1rpx solid #C8B47E; border-radius: 12rpx; }.choice:active { transform: scale(.99); background: #F4EBCF; }.choice.safe { border-left: 8rpx solid #4E8A62; }.choice.caution { border-left: 8rpx solid #D6AE47; }.choice.risk { border-left: 8rpx solid #D16348; }.result-number { display: inline-block; padding: 8rpx 16rpx; background: #FFF0E9; border-radius: 999rpx; }
+.scene-art { display: block; width: 100%; height: auto; margin: 16rpx 0 12rpx; border: 2rpx solid #C8B47E; border-radius: 18rpx; box-shadow: 0 10rpx 20rpx rgba(50,39,18,.18); }
+.camp-choice { width: 100%; margin-top: 18rpx; padding: 20rpx; background: #F7EED9; color: #173D31; border: 2rpx solid #C8B47E; border-radius: 14rpx; text-align: left; flex-direction: column; align-items: flex-start; font-size: 27rpx; line-height: 1.4; }
+.camp-choice .source { color: #5E563E; margin-top: 5rpx; }
+.perspective-card { position: relative; display: flex; width: 100%; min-width: 100%; min-height: 172rpx; margin-top: 18rpx; padding: 26rpx 145rpx 26rpx 64rpx; border: 0; border-radius: 24rpx; background: #123c26; overflow: hidden; text-align: left; align-items: center; justify-content: flex-start; box-sizing: border-box; }
+.perspective-attacker { background: #35112f; }
+.perspective-art { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.perspective-copy { position: relative; z-index: 1; flex: 1; min-width: 0; text-align: left; }
+.perspective-title { color: #fffaf0; font-size: 31rpx; font-weight: 800; line-height: 1.3; }
+.perspective-subtitle { color: #f6eddb; font-size: 24rpx; line-height: 1.4; margin-top: 7rpx; }
+.perspective-card:active { opacity: .88; }
+.dialogue-copy { white-space: pre-line; }
+.decision-nav { display: flex; gap: 12rpx; margin-top: 8rpx; }
+.decision-nav button { flex: 1; min-height: 56rpx; font-size: 22rpx; color: #263F33; background: #E9D7A2; }
+.wide { min-width: 100%; min-height: 92rpx; }
+.camp-choice, .choice { min-width: 100%; margin-top: 20rpx; }
+.decision-nav { gap: 18rpx; margin-top: 16rpx; }
+.decision-nav button { min-height: 84rpx; font-size: 27rpx; font-weight: 700; }
+.decision-nav button[disabled] { opacity: 1; color: #665d49; background: #e5ddc9; }
+/* 复盘保留决策翻页与两个出口，避免按钮被底部安全区域遮挡。 */
+.result { padding: 18rpx 24rpx 28rpx; }
+.result .emoji { font-size: 56rpx; margin: 4rpx 0; }
+.result .card-title { font-size: 29rpx; line-height: 1.3; }
+.result .result-number { font-size: 34rpx; margin: 10rpx 0; }
+.result .lesson, .result .fact { margin: 12rpx 0; padding: 14rpx; font-size: 23rpx; line-height: 1.45; }
+.result .section-title { margin-top: 12rpx; font-size: 28rpx; }
+.result .decision { padding: 10rpx 0; }
+.result .source { font-size: 20rpx; line-height: 1.4; }
+.result .wide { margin-top: 12rpx; min-height: 84rpx; }
+.choice { display: flex; flex-direction: row; align-items: center; gap: 16rpx; background: #FFFDF7; border: 2rpx solid #C8B47E; color: #263F33; }
+.choice-kind { flex: none; display: flex; align-items: center; justify-content: center; width: 46rpx; height: 46rpx; margin: 0; border-radius: 50%; background: #EDE3C8; color: #263F33; font-size: 24rpx; }
+.review-card .eyebrow { margin-top: 16rpx; letter-spacing: 0; }
+.review-line, .review-safe { padding: 14rpx; margin-top: 12rpx; background: #F6EFDE; border-radius: 12rpx; color: #263F33; font-size: 26rpx; line-height: 1.45; }
+.review-safe { background: #E5EFE5; font-weight: 700; }
+.score-preview { position: relative; width: 540rpx; max-width: 100%; height: 720rpx; margin: 12rpx auto; }
+.score-preview image { position: absolute; width: 100%; height: 100%; }
+.score-copy { position: absolute; top: 29%; left: 8%; right: 8%; text-align: center; color: #173D31; font-size: 29rpx; line-height: 1.5; }
+.score-title { font-size: 33rpx; font-weight: 800; }
+.score-number { margin-top: 22rpx; font-size: 35rpx; font-weight: 800; }
+.score-foot { margin-top: 24rpx; font-size: 23rpx; }
+.share-page { text-align: center; padding: 18rpx; }
+.share-page .wide { margin-top: 10rpx; min-height: 80rpx; }
+.export-canvas { position: fixed; left: -9999px; top: 0; }
+.large-text .review-line, .large-text .review-safe { font-size: 30rpx; }
+.compact-art { height: auto; margin: 12rpx 0; }
+.camp-scene { height: auto; margin: 18rpx 0 8rpx; }
+.feedback-scene { height: auto; margin: 16rpx 0; }
+.ending { padding-top: 24rpx; padding-bottom: 24rpx; }
+.solo-page { padding-bottom: 18rpx; }
+.score-preview image { top: 0; left: 0; }
+.solo-page .title { display: inline-block; color: #FFF9E9; background: #173D31; padding: 8rpx 14rpx; border-radius: 10rpx; font-size: 38rpx; }
+.solo-page .solo-kicker { color: #FFF3C9; background: #173D31; display: table; padding: 5rpx 12rpx; border-radius: 8rpx; letter-spacing: 1rpx; }
+.large-text .perspective-subtitle { font-size: 28rpx; }
+.large-text .result .source { font-size: 26rpx; line-height: 1.4; }
+.large-text .time-label, .large-text .choice-label { color: #3D3626; font-size: 27rpx; }
+.large-text .perspective-card { padding-right: 190rpx; min-height: 190rpx; }
+.attacker-result { padding: 20rpx; }
+.attacker-result .lesson, .attacker-result .fact { margin: 12rpx 0; padding: 14rpx; line-height: 1.4; }
+.attacker-result .wide { min-height: 80rpx; margin-top: 10rpx; padding: 14rpx 20rpx; }
+@media (max-height: 700px) {
+  .score-preview { width: 420rpx; height: 560rpx; }
+  .score-copy { font-size: 24rpx; }
+  .score-title { font-size: 28rpx; }
+  .score-number { margin-top: 14rpx; font-size: 30rpx; }
+  .score-foot { margin-top: 14rpx; font-size: 20rpx; }
+}

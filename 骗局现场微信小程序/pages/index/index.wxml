@@ -1,0 +1,24 @@
+<view class="page index-page {{largeText ? 'large-text' : ''}}">
+  <image class="app-background" src="/assets/images/app-background-3d.png" mode="aspectFill"></image>
+  <view class="hero">
+    <image class="hero-art" src="/assets/images/home-hero-3d.png" mode="aspectFill" aria-label="五位玩家围绕线索桌讨论身份的游戏场景"></image>
+    <view class="hero-shade"></view>
+    <view class="hero-top"><view class="eyebrow light">CASEBOOK · 30 STORIES</view><view class="hero-count">30</view></view>
+    <view class="title light-title">今天，来破个局。</view>
+    <view class="hero-copy">每个故事都有单人倒带和多人推理两种玩法。先找到证据，再决定下一步。</view>
+    <view class="hero-rule"><text class="rule-dot">●</text> 全部转账、人物与结果均为虚构演练</view>
+  </view>
+  <view class="catalog-head"><view class="catalog-info"><view class="section-title">案件册</view><view class="subtle">30 个故事均可体验倒带样例</view></view><button class="size-toggle" bindtap="toggleTextSize">{{largeText ? '标准字号' : '大字模式'}}</button><view class="page-mark">{{catalogPage + 1}} / {{totalPages}}</view></view>
+  <view class="case-list">
+    <view wx:for="{{pageCases}}" wx:key="id" class="case {{active === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="choose">
+      <view class="case-index">{{item.id < 10 ? '0' + item.id : item.id}}</view>
+      <view class="case-main"><view class="case-name">{{item.name}}</view><view class="source">{{item.scene}} · {{item.status}}</view></view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+  <view class="catalog-pager"><button class="page-button pager-prev gold-button {{catalogPage === 0 ? 'page-disabled' : ''}}" disabled="{{catalogPage === 0}}" bindtap="previousPage"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">← 上一页</text></button><button class="page-button pager-next gold-button {{catalogPage === totalPages - 1 ? 'page-disabled' : ''}}" disabled="{{catalogPage === totalPages - 1}}" bindtap="nextPage"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">下一页 →</text></button></view>
+  <view class="case-action" wx:if="{{selected}}">
+    <view class="action-copy"><view><text class="tag">{{selected.scene}}</text><text class="tag">案件 {{selected.id}}</text></view><view class="action-name">{{selected.name}}</view></view>
+    <view class="buttons"><button class="secondary half" bindtap="startSolo"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">单人倒带一下</text></button><button class="primary half" bindtap="startParty"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">多人推理</text></button></view>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+const assert = require('assert')
+const { dealRoles, settle } = require('../data/partyCore')
+const seats = dealRoles(() => 0.5)
+assert.strictEqual(new Set(seats).size, 5)
+const votes = [4, 4, 1, 2, 4]
+assert.strictEqual(settle(votes, 4, 'safe', false).caught, true)
+assert.strictEqual(settle([4, 4, 1, 2, 1], 4, 'safe', false).caught, false)
+assert.strictEqual(settle([4, 4, 1, 2, 1], 4, 'safe', false).safety, 'blocked')
+assert.strictEqual(settle(votes, 4, '', true).safety, 'unresolved')
+assert.strictEqual(settle(votes, 4, 'pay', false).safety, 'paid')
+assert.strictEqual(settle(votes, 4, 'safe', true).caught, false)
+console.log('party-core.test.js: PASS')

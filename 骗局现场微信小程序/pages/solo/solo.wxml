@@ -1,0 +1,81 @@
+<view class="page solo-page {{largeText ? 'large-text' : ''}}" wx:if="{{story}}">
+  <image class="app-background" src="/assets/images/app-background-3d.png" mode="aspectFill"></image>
+  <view class="eyebrow solo-kicker">SOLO · 双视角演练</view><view class="title">{{story.name}}</view>
+  <view wx:if="{{phase === 'camp'}}" class="card camp-card">
+    <view class="card-title">选择你的视角</view>
+    <view class="subtle">同一案例，从两个角度发现风险。</view>
+    <image class="scene-art camp-scene" src="{{sceneImage}}" mode="widthFix" aria-label="本案场景示意图"></image>
+    <button class="perspective-card perspective-defender" data-camp="defender" bindtap="selectCamp"><image class="perspective-art" src="/assets/images/perspective-defender-3d.png" mode="scaleToFill" aria-hidden="true"></image><view class="perspective-copy"><view class="perspective-title">识破诈骗</view><view class="perspective-subtitle">查证线索，截断风险</view></view></button>
+    <button class="perspective-card perspective-attacker" data-camp="attacker" bindtap="selectCamp"><image class="perspective-art" src="/assets/images/perspective-attacker-3d.png" mode="scaleToFill" aria-hidden="true"></image><view class="perspective-copy"><view class="perspective-title">诈骗者视角</view><view class="perspective-subtitle">观察引导，学习应对</view></view></button>
+  </view>
+  <view wx:if="{{phase === 'attackerIntro'}}" class="card">
+    <view class="card-title">诈骗者视角 · 模拟引导</view>
+    <image class="scene-art compact-art" src="{{sceneImage}}" mode="widthFix" aria-label="故事场景示意图"></image>
+    <view class="subtle">扮演虚构引导者，选择三个环节的目标，再模拟当事人的反应。付款和其他操作仅发生在游戏中。</view>
+    <view class="fact">本视角为游戏化演练，案例来源：{{story.sourceTitle}}（{{story.sourceDate}}）。</view>
+    <button class="primary wide" bindtap="startAttacker"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">开始模拟</text></button><button class="secondary wide" bindtap="changeCamp"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">重新选择视角</text></button>
+  </view>
+  <view wx:if="{{phase === 'attackerPlay'}}" class="card">
+    <view class="eyebrow">引导环节 {{attackerStep + 1}} / 3</view>
+    <view class="card-title">{{attackerStages[attackerStep].title}}</view>
+    <view class="subtle">{{attackerStages[attackerStep].clue}}</view>
+    <view wx:if="{{attackerStages[attackerStep].dialogue}}" class="fact">{{attackerStages[attackerStep].dialogue}}</view>
+    <view class="choice-label">{{attackerStages[attackerStep].prompt}}</view>
+    <button wx:for="{{attackerStages[attackerStep].choices}}" wx:key="label" class="camp-choice" data-index="{{index}}" bindtap="chooseAttacker">{{item.label}}</button>
+  </view>
+  <view wx:if="{{phase === 'attackerFeedback'}}" class="card"><view class="card-title">观察反馈</view><image class="scene-art feedback-scene" src="{{sceneImage}}" mode="widthFix" aria-label="本案场景示意图"></image><view class="lesson">{{attackerFeedback}}</view><view wx:if="{{perspective}}" class="fact">本案核验重点：{{perspective.focus[attackerStep]}}</view><button class="primary wide" bindtap="nextAttacker"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">继续</text></button></view>
+  <view wx:if="{{phase === 'attackerBranch'}}" class="card"><view class="eyebrow">当事人反应 · {{attackerStages[attackerStep].title}}</view><view class="card-title">模拟两种可能的反应</view><view class="subtle">{{attackerStages[attackerStep].clue}}</view><view class="fact">本案核验重点：{{perspective.focus[attackerStep]}}</view><button class="camp-choice" data-action="verify" bindtap="resolveAttackerBranch">当事人：{{perspective.focus[attackerStep]}}</button><button class="camp-choice" data-action="defer" bindtap="resolveAttackerBranch">当事人：暂不核实，模拟继续配合</button></view>
+  <view wx:if="{{phase === 'attackerResult'}}" class="card attacker-result"><view class="card-title">{{attackerEndingTitle}}</view><view class="lesson">{{attackerEndingText}}</view><view class="fact">{{attackerEndingDetail}}</view><view class="source">案例来源：{{story.sourceTitle}}（{{story.sourceDate}}）。互动内容为游戏化演练。</view><button class="ghost wide" bindtap="showAttackerReview">查看每一步复盘</button><button class="secondary wide" bindtap="showScoreCard"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill"></image><text class="primary-label">生成分享成绩卡</text></button><button class="primary wide" bindtap="changeCamp"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">切换视角再体验</text></button><button class="ghost wide" bindtap="back">返回案件大厅</button></view>
+  <view wx:if="{{phase === 'intro' && !script}}" class="card ending">
+    <view class="emoji">🧩</view><view class="card-title">这个故事正在独立编排中。</view>
+    <view class="subtle">已绑定真实案例原文，但尚未完成事实链、分支和复盘的逐项核验，因此不会套用其他故事的玩法内容。</view>
+    <view class="source">来源：{{story.sourceTitle}}（{{story.sourceDate}}）</view>
+    <button class="primary wide" bindtap="back"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">返回案件大厅</text></button>
+  </view>
+  <view wx:if="{{phase === 'intro' && script}}" class="card ending">
+    <view class="eyebrow">原时间线 · 终局锚点</view><image class="scene-art compact-art" src="{{sceneImage}}" mode="widthFix" aria-label="故事场景示意图"></image><view class="card-title">如果不截断，它会走到这里。</view>
+    <view class="subtle">基于真实案例改编。人物、对话、金额和分支为演练设计，不发生真实转账。</view>
+    <view class="fact">{{script.fact}}</view>
+    <view class="rewind-rule">倒带规则：观察每个节点，根据已知线索作出判断；选择之后再揭示可能的后果。</view>
+    <button class="primary wide" bindtap="start"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">启动倒带 · 回到第 1 个截断点</text></button>
+  </view>
+  <view wx:if="{{phase === 'scene'}}" class="card"><view class="eyebrow">游戏改编 · 第 {{decisions.length + 1}} 幕</view><view class="card-title">{{stage.title}}</view><image class="scene-art" src="{{sceneImage}}" mode="widthFix" aria-label="故事场景示意图"></image><view class="subtle">{{stage.clue}}</view><view class="fact dialogue-copy">{{stage.dialogue}}</view><button class="primary wide" bindtap="showChoices"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">思考接下来的行动</text></button></view>
+  <view wx:if="{{phase === 'play'}}">
+    <view class="status"><text>第 {{decisions.length + 1}} 次选择</text><text>虚拟损失 ¥{{virtualLoss}}</text></view>
+    <view class="timeline"><view class="time-dot on">{{decisions.length + 1}}</view><view class="time-line"></view><view class="time-label">{{stage.moment}} · {{script.sceneFirst && cutAt ? '继续调查' : '可截断'}}</view></view>
+    <view class="card clue-card"><view class="eyebrow">{{stage.title}} · {{script.sceneFirst && cutAt ? '调查行动' : '截断位置'}}</view><view class="card-title">{{stage.clue}}</view></view>
+    <view class="card"><view class="prompt">{{stage.prompt}}</view><view class="choice-label">{{script.sceneFirst && cutAt ? '选择接下来的调查行动' : '你要在哪里截断原时间线？'}}</view>
+      <button wx:for="{{stage.choices}}" wx:key="label" class="choice" data-index="{{index}}" bindtap="choose"><view class="choice-kind">{{index + 1}}</view><view>{{item.label}}</view></button>
+    </view>
+  </view>
+  <view wx:if="{{phase === 'consequence'}}" class="card consequence {{choice.tone}}">
+    <view class="eyebrow">第 {{decisions.length}} 次选择 · 后果</view><view class="card-title">{{choice.tone === 'safe' ? '你采取了安全行动。' : choice.tone === 'caution' ? '你暂缓了决定。' : '你让风险继续发展。'}}</view><image class="scene-art feedback-scene" src="{{sceneImage}}" mode="widthFix" aria-label="本案场景示意图"></image><view class="subtle">{{choice.note}}</view>
+    <view class="ledger"><text>本次变化：¥{{choice.loss}}</text><text>当前虚拟损失：¥{{virtualLoss}}</text></view>
+    <button class="primary wide" bindtap="next"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill" aria-hidden="true"></image><text class="primary-label">{{ending ? '进入本局复盘' : '查看下一条线索'}}</text></button>
+  </view>
+  <view wx:if="{{phase === 'branch'}}" class="card">
+    <view class="eyebrow">分支 · {{branchTone === 'risk' ? '风险继续' : '等待核验'}}</view>
+    <view class="card-title">{{branchTone === 'risk' ? '你已沿着对方的路径继续。' : '你暂时没有完全配合。'}}</view>
+    <view class="subtle">结合刚才的选择，决定是否把判断交给独立渠道。本分支为虚构演练。</view>
+    <button class="camp-choice" data-action="verify" bindtap="resolveBranch">暂停并通过可信渠道独立核实</button>
+    <button class="camp-choice" data-action="continue" bindtap="resolveBranch">暂不核实，继续观察后续线索</button>
+  </view>
+  <view wx:if="{{phase === 'result'}}" class="card result">
+    <view class="emoji">{{ending === 'safe' ? '🛡️' : ending === 'loss' ? '⚠️' : '🔍'}}</view>
+    <view class="card-title">{{cutAt ? '你把原时间线截断在倒带点 ' + cutAt + '。' : ending === 'loss' ? '你没有截断，游戏中的风险继续扩大。' : '你尚未真正截断原时间线。'}}</view>
+    <view class="result-number">本局虚拟损失 ¥{{virtualLoss}}</view>
+    <view class="source">来源：{{story.sourceTitle}}。金额与结果为虚构演练。</view>
+    <button class="primary wide" bindtap="showReview"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill"></image><text class="primary-label">查看每一步复盘</text></button>
+    <button class="secondary wide" bindtap="showScoreCard"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill"></image><text class="primary-label">生成分享成绩卡</text></button>
+    <button class="ghost wide" bindtap="replay">重新倒带</button><button class="ghost wide" bindtap="back">返回案件大厅</button>
+  </view>
+  <view wx:if="{{phase === 'resultReview'}}" class="card review-card">
+    <view class="card-title">逐步复盘</view><view wx:if="{{decisions.length}}"><view class="eyebrow">{{decisionPage + 1}} / {{decisions.length}} · {{decisions[decisionPage].title}}</view><view class="review-line">当时看到：{{decisions[decisionPage].clue}}</view><view class="review-line">你的选择：{{decisions[decisionPage].label}}</view><view class="review-line">后果：{{decisions[decisionPage].note || '继续观察后续线索。'}}</view><view class="review-safe">可以这样核实：{{decisions[decisionPage].recommendedAction}}</view></view>
+    <view class="decision-nav"><button bindtap="previousDecision" disabled="{{decisionPage === 0}}">上一条</button><button bindtap="nextDecision" disabled="{{decisionPage === decisions.length - 1}}">下一条</button></view><button class="ghost wide" bindtap="backToResult">返回结算</button>
+  </view>
+  <view wx:if="{{phase === 'scoreCard'}}" class="card share-page">
+    <view class="card-title">本局成绩卡</view><view class="score-preview"><image src="/assets/images/result-card-3d.jpg" mode="scaleToFill"></image><view class="score-copy"><view class="score-title">骗局现场 · 倒带成绩</view><view>{{story.name}}</view><view class="score-number">风险截断 {{cardInterruptionCount}} 次</view><view class="score-number">虚拟损失 ¥{{cardVirtualLoss}}</view><view class="score-foot">虚构演练 · 一起识破骗局</view></view></view>
+    <canvas canvas-id="scoreCanvas" class="export-canvas" style="width:300px;height:400px"></canvas><button class="primary wide" bindtap="saveScoreCard"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill"></image><text class="primary-label">保存图片到相册</text></button><button class="secondary wide" open-type="share"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill"></image><text class="primary-label">邀请微信好友</text></button><view class="source">保存后可自行发布到朋友圈；好友分享打开本案件。</view><button class="ghost wide" bindtap="backToResult">返回结算</button>
+  </view>
+  <view wx:if="{{phase === 'attackerReview'}}" class="card review-card"><view class="card-title">引导过程复盘</view><view class="eyebrow">{{attackerReviewPage + 1}} / {{attackerOutcomes.length}} · {{attackerOutcomes[attackerReviewPage].title}}</view><view class="review-line">你的选择：{{attackerOutcomes[attackerReviewPage].label}}</view><view class="review-line">{{attackerOutcomes[attackerReviewPage].note}}</view><view class="review-safe">当事人可以这样核实：{{attackerOutcomes[attackerReviewPage].focus}}</view><view class="decision-nav"><button bindtap="previousAttackerReview" disabled="{{attackerReviewPage === 0}}">上一条</button><button bindtap="nextAttackerReview" disabled="{{attackerReviewPage === attackerOutcomes.length - 1}}">下一条</button></view><button class="ghost wide" bindtap="returnAttackerResult">返回结算</button></view>
+</view>

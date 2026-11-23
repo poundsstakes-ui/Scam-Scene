@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/solo/solo",
+    "pages/party/party",
+    "pages/review/review"
+  ],
+  "window": {
+    "navigationBarTitleText": "骗局现场",
+    "navigationBarBackgroundColor": "#163C2E",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F4F8F1",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

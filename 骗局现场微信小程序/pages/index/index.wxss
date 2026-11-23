@@ -1,0 +1,40 @@
+.index-page { height: 100vh; overflow: hidden; padding: 18rpx 22rpx 20rpx; }.hero { background: #173D31; border: 3rpx solid #C8A85B; border-radius: 22rpx; padding: 24rpx 28rpx; box-shadow: 0 14rpx 28rpx rgba(40,60,38,.24); }.light { color: #E9D68D; }.light-title { color: #FFF9E9; font-size: 42rpx; font-weight: 800; margin: 4rpx 0; }.hero-copy { color: #D9E2CC; line-height: 1.5; font-size: 24rpx; }.catalog-head { display: flex; align-items: end; justify-content: space-between; margin-top: 16rpx; }.section-title { color: #3A543F; margin-top: 0; font-size: 30rpx; }.catalog-head .subtle { font-size: 21rpx; line-height: 1.25; }.page-mark { background: #285E47; color: #FFF9E9; padding: 7rpx 12rpx; border-radius: 10rpx; font-size: 20rpx; font-weight: 800; }.case-list { margin-top: 10rpx; border: 2rpx solid #C8B47E; border-radius: 16rpx; background: #FFF9E9; overflow: hidden; }.case { display: flex; align-items: center; min-height: 60rpx; padding: 11rpx 14rpx; border-bottom: 1rpx solid #E7DABD; }.case.selected { background: #E7D69B; box-shadow: inset 7rpx 0 0 #D16348; }.case-index { color: #9B7333; font-weight: 850; width: 58rpx; }.case-main { flex: 1; }.case-name { font-size: 26rpx; font-weight: 800; }.case .source { font-size: 18rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }.arrow { color: #9B7333; font-size: 34rpx; }.catalog-pager { display: flex; gap: 12rpx; margin-top: 10rpx; }.page-button { flex: 1; background: #EEE0B9; color: #5D522E; border: 1rpx solid #C8B47E; border-radius: 10rpx; padding: 12rpx; font-size: 21rpx; font-weight: 700; }.page-button.page-disabled { opacity: .42; }.case-action { display: flex; gap: 14rpx; align-items: center; margin-top: 12rpx; padding: 14rpx 16rpx; background: #FFF8E8; border: 2rpx solid #C8B47E; border-radius: 16rpx; }.action-copy { flex: 1; min-width: 0; }.action-name { font-size: 27rpx; font-weight: 850; margin-top: 7rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }.buttons { display: flex; gap: 8rpx; width: 300rpx; }.half { flex: 1; font-size: 20rpx; padding: 15rpx 4rpx; }
+.index-page { height: auto; min-height: 100vh; overflow-x: hidden; }
+.hero { position: relative; overflow: hidden; }
+.hero-art { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .92; }
+.hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,35,27,.82) 0%, rgba(13,42,31,.64) 54%, rgba(13,42,31,.9) 100%); }
+.hero-top, .light-title, .hero-copy, .hero-rule { position: relative; z-index: 1; }
+.hero-top { display: flex; align-items: center; justify-content: space-between; }
+.hero-count { width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center; box-sizing: border-box; border: 2rpx solid #E9D68D; border-radius: 50%; color: #E9D68D; font-size: 20rpx; font-weight: 850; }
+.hero-rule { display: inline-flex; align-items: center; margin-top: 14rpx; padding: 7rpx 12rpx; background: rgba(255,255,255,.10); border-radius: 999rpx; color: #D9E2CC; font-size: 18rpx; }
+.rule-dot { margin-right: 7rpx; color: #E9D68D; font-size: 14rpx; }
+.case:active { background: #F1E4BA; }
+.page-button { min-height: 64rpx; }
+.buttons { width: 360rpx; }
+.half { font-size: 22rpx; }
+.page-button.gold-button { background: transparent; color: #3C2609; border: 0; }
+.half { min-height: 72rpx; }
+/* 给目录、翻页和两个玩法入口留出足够的阅读和点击空间。 */
+.index-page { padding: 22rpx 24rpx calc(30rpx + env(safe-area-inset-bottom)); }
+.catalog-head { margin-top: 24rpx; }
+.catalog-head .subtle { font-size: 24rpx; color: #51472f; }
+.case-list { margin-top: 16rpx; }
+.case { min-height: 96rpx; padding: 14rpx 18rpx; }
+.case-name { font-size: 29rpx; line-height: 1.35; }
+.case .source { font-size: 22rpx; color: #655a42; }
+.catalog-pager { gap: 20rpx; margin-top: 18rpx; }
+.catalog-pager .page-button { min-width: 0; min-height: 90rpx; padding: 18rpx 12rpx; font-size: 28rpx; font-weight: 800; }
+.catalog-pager .page-button.page-disabled { opacity: 1; color: #564827; background: transparent; }
+.catalog-pager .page-button.page-disabled .primary-plate { opacity: .5; }
+.case-action { display: flex; flex-direction: column; align-items: stretch; gap: 14rpx; margin-top: 20rpx; padding: 18rpx 20rpx; }
+.action-name { font-size: 29rpx; }
+.buttons { width: 100%; gap: 18rpx; }
+.buttons .half { min-width: 0; min-height: 94rpx; font-size: 27rpx; padding: 18rpx 8rpx; }
+.size-toggle { min-height: 64rpx; padding: 8rpx 16rpx; background: #F7EFD9; color: #173D31; border: 2rpx solid #9C8753; font-size: 24rpx; font-weight: 700; }
+.large-text .case-name, .large-text .action-name { font-size: 32rpx; }
+.large-text .case .source { font-size: 26rpx; }
+.catalog-head { gap: 10rpx; }
+.catalog-info { flex: 1; min-width: 0; }
+.size-toggle { flex: none; width: 150rpx; min-width: 150rpx; margin: 0; }
+.page-mark { flex: none; white-space: nowrap; }
+.index-page { padding-bottom: 18rpx; }

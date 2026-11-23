@@ -1,0 +1,3 @@
+.card-title { font-size: 34rpx; font-weight: 800; margin-bottom: 16rpx; }
+.review-art { display: block; width: 100%; height: auto; margin: 16rpx 0 10rpx; border: 2rpx solid #C8B47E; border-radius: 18rpx; box-shadow: 0 10rpx 20rpx rgba(50,39,18,.18); }
+.review-heading { display: table; color: #FFF9E9; background: #173D31; padding: 6rpx 12rpx; border-radius: 8rpx; }

@@ -1,0 +1,18 @@
+const assert = require('assert')
+const { cases } = require('../data/cases')
+const { getPartyScript } = require('../data/partyScripts')
+const { settle } = require('../data/partyCore')
+const actions = new Set()
+for (const story of cases) {
+  const script = getPartyScript(story)
+  assert.ok(script.caseEvent && script.caseEvent.choices.length >= 3, `case ${story.id}: case event missing`)
+  assert.ok(script.caseEvent.choices.some(c => c.tone === 'safe'))
+  assert.ok(script.caseEvent.choices.some(c => c.tone === 'risk'))
+  actions.add(script.caseEvent.choices.find(c => c.tone === 'safe').label)
+  assert.ok(script.caseEvent.choices.every(c => c.note))
+}
+assert.ok(actions.size >= 25, 'case actions should reflect their cases')
+assert.strictEqual(settle([1, 1, 1, 0, 0], 1, 'safe', false).safety, 'blocked')
+assert.strictEqual(settle([1, 1, 1, 0, 0], 1, 'risk', false).safety, 'risk')
+assert.strictEqual(settle([0, 0, 1, 0, 0], 1, 'safe', false).safety, 'blocked')
+console.log('party-case-actions.test.js: PASS (30 case action sets)')
