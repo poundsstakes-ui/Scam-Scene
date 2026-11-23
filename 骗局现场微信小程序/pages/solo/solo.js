@@ -8,7 +8,7 @@ const { makeAttackerStages } = require('../../data/attackerChoices')
 const { returnToLobby } = require('../../utils/returnToLobby')
 const { isLargeText } = require('../../utils/textSize')
 Page({
-  data: { story: null, script: null, phase: 'camp', camp: '', stageIndex: 0, stage: null, choice: null, decisions: [], virtualLoss: 0, risk: 0, ending: '', cutAt: 0, attackerStep: 0, attackerAnswers: [] },
+  data: { story: null, script: null, phase: 'camp', camp: '', stageIndex: 0, stage: null, choice: null, decisions: [], virtualLoss: 0, risk: 0, ending: '', cutAt: 0, rewindOriginal: null, rewindAvailable: false, rewindPreviousChoice: '', attackerStep: 0, attackerAnswers: [] },
   onLoad(query) {
     const story = cases.find(item => item.id === Number(query.id)) || cases[0]
     const script = getScript(story.id)
@@ -97,7 +97,7 @@ Page({
     const endingDetail = (unresolved.length ? `仍需关注“${unresolved[0].title}”：${unresolved[0].focus}。` : `本案关键核验：${outcomes.map(item => item.focus).join('；')}。`) + ticketReview + ` 游戏虚拟损失 ¥${this.data.attackerVirtualLoss}，金额为演练设定。`
     this.setData({ attackerOutcomes: outcomes, attackerReviewPage: 0, attackerScore: direct, attackerUnresolved: unresolved.length, attackerEndingTitle: endingTitle, attackerEndingText: endingText, attackerEndingDetail: endingDetail, phase: 'attackerResult' })
   },
-  changeCamp() { this.setData({ phase: 'camp', camp: '', stageIndex: 0, stage: this.data.script ? this.data.script.stages[0] : null, choice: null, decisions: [], virtualLoss: 0, risk: 0, ending: '', cutAt: 0, attackerStep: 0, attackerAnswers: [] }) },
+  changeCamp() { this.setData({ phase: 'camp', camp: '', stageIndex: 0, stage: this.data.script ? this.data.script.stages[0] : null, choice: null, decisions: [], virtualLoss: 0, risk: 0, ending: '', cutAt: 0, rewindOriginal: null, rewindAvailable: false, rewindPreviousChoice: '', attackerStep: 0, attackerAnswers: [] }) },
   start() { if (this.data.script) this.setData({ phase: this.data.script.sceneFirst ? 'scene' : 'play' }) },
   showChoices() { if (this.data.phase === 'scene') this.setData({ phase: 'play' }) },
   choose(e) {
@@ -105,8 +105,8 @@ Page({
     const option = this.data.stage.choices[Number(e.currentTarget.dataset.index)]
     if (!option) return
     const safeChoice = this.data.stage.choices.find(item => item.tone === 'safe')
-    const decisions = [...this.data.decisions, { title: this.data.stage.title, clue: this.data.stage.clue, label: option.label, note: option.note, tone: option.tone, recommendedAction: safeChoice ? safeChoice.label : '暂停操作，通过独立可信渠道核实' }]
-    this.setData({ choice: option, decisions, virtualLoss: this.data.virtualLoss + option.loss, risk: Math.max(0, this.data.risk + option.risk), ending: option.terminal || '' , cutAt: option.tone === 'safe' && !this.data.cutAt ? decisions.length : this.data.cutAt, phase: 'consequence' })
+    const decisions = [...this.data.decisions, { title: this.data.stage.title, clue: this.data.stage.clue, label: option.label, note: option.note, tone: option.tone, recommendedAction: safeChoice ? safeChoice.label : '暂停操作，通过独立可信渠道核实', loss: option.loss, checkpoint: { stageIndex: this.data.stageIndex, virtualLoss: this.data.virtualLoss, risk: this.data.risk, cutAt: this.data.cutAt } }]
+    this.setData({ choice: option, decisions, virtualLoss: this.data.virtualLoss + option.loss, risk: Math.max(0, this.data.risk + option.risk), ending: option.terminal || '', rewindPreviousChoice: '', cutAt: option.tone === 'safe' && !this.data.cutAt ? decisions.length : this.data.cutAt, phase: 'consequence' })
   },
   next() {
     if (this.data.phase !== 'consequence') return
@@ -147,7 +147,21 @@ Page({
     if (!ending) ending = this.data.virtualLoss >= 3000 ? 'loss' : this.data.virtualLoss > 0 ? 'contain' : 'safe'
     const lastChoice = this.data.decisions.filter(item => item.note).slice(-1)[0]
     const endingDetail = lastChoice ? `《${this.data.story.name}》· ${lastChoice.title}：${lastChoice.note}` : `《${this.data.story.name}》：请回看线索并选择独立渠道核实。`
-    this.setData({ ending, endingDetail, interruptionCount: this.data.cutAt ? 1 : 0, decisionPage: 0, phase: 'result' })
+    const endingLabel = ending === 'safe' ? '风险已截断' : ending === 'loss' ? '风险继续扩大' : '风险暂缓'
+    this.setData({ ending, endingLabel, endingDetail, interruptionCount: this.data.cutAt ? 1 : 0, rewindAvailable: this.data.decisions.some(item => item.loss > 0 && item.checkpoint), decisionPage: 0, phase: 'result' })
+  },
+  rewindLoss() {
+    if (this.data.phase !== 'result') return
+    const decisions = this.data.decisions
+    let index = decisions.length - 1
+    while (index >= 0 && !(decisions[index].loss > 0 && decisions[index].checkpoint)) index--
+    if (index < 0) return
+    const decision = decisions[index]
+    const checkpoint = decision.checkpoint
+    const stage = this.data.script.stages[checkpoint.stageIndex]
+    if (!stage) return
+    const rewindOriginal = this.data.rewindOriginal || { loss: this.data.virtualLoss, ending: this.data.ending, endingLabel: this.data.endingLabel }
+    this.setData({ phase: 'play', stageIndex: checkpoint.stageIndex, stage, decisions: decisions.slice(0, index), virtualLoss: checkpoint.virtualLoss, risk: checkpoint.risk, cutAt: checkpoint.cutAt, choice: null, ending: '', rewindAvailable: false, rewindOriginal, rewindPreviousChoice: decision.label })
   },
   showReview() { this.setData({ phase: 'resultReview', decisionPage: 0 }) },
   showScoreCard() {

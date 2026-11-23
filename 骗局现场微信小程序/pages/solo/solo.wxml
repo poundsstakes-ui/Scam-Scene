@@ -44,7 +44,7 @@
     <view class="status"><text>第 {{decisions.length + 1}} 次选择</text><text>虚拟损失 ¥{{virtualLoss}}</text></view>
     <view class="timeline"><view class="time-dot on">{{decisions.length + 1}}</view><view class="time-line"></view><view class="time-label">{{stage.moment}} · {{script.sceneFirst && cutAt ? '继续调查' : '可截断'}}</view></view>
     <view class="card clue-card"><view class="eyebrow">{{stage.title}} · {{script.sceneFirst && cutAt ? '调查行动' : '截断位置'}}</view><view class="card-title">{{stage.clue}}</view></view>
-    <view class="card"><view class="prompt">{{stage.prompt}}</view><view class="choice-label">{{script.sceneFirst && cutAt ? '选择接下来的调查行动' : '你要在哪里截断原时间线？'}}</view>
+    <view class="card"><view wx:if="{{rewindPreviousChoice}}" class="rewind-context">上次选择：{{rewindPreviousChoice}}。再试一种选择。</view><view class="prompt">{{stage.prompt}}</view><view class="choice-label">{{script.sceneFirst && cutAt ? '选择接下来的调查行动' : '你要在哪里截断原时间线？'}}</view>
       <button wx:for="{{stage.choices}}" wx:key="label" class="choice" data-index="{{index}}" bindtap="choose"><view class="choice-kind">{{index + 1}}</view><view>{{item.label}}</view></button>
     </view>
   </view>
@@ -63,8 +63,9 @@
   <view wx:if="{{phase === 'result'}}" class="card result">
     <view class="emoji">{{ending === 'safe' ? '🛡️' : ending === 'loss' ? '⚠️' : '🔍'}}</view>
     <view class="card-title">{{cutAt ? '你把原时间线截断在倒带点 ' + cutAt + '。' : ending === 'loss' ? '你没有截断，游戏中的风险继续扩大。' : '你尚未真正截断原时间线。'}}</view>
-    <view class="result-number">本局虚拟损失 ¥{{virtualLoss}}</view>
+    <view class="result-number">本局虚拟损失 ¥{{virtualLoss}}</view><view wx:if="{{rewindOriginal}}" class="rewind-comparison">原路线：{{rewindOriginal.endingLabel}} ¥{{rewindOriginal.loss}} · 新路线：{{endingLabel}} ¥{{virtualLoss}}</view>
     <view class="source">来源：{{story.sourceTitle}}。金额与结果为虚构演练。</view>
+    <button wx:if="{{rewindAvailable}}" class="primary wide" bindtap="rewindLoss"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill"></image><text class="primary-label">倒带到损失发生前</text></button>
     <button class="primary wide" bindtap="showReview"><image class="primary-plate" src="/assets/images/button-primary-3d.png" mode="scaleToFill"></image><text class="primary-label">查看每一步复盘</text></button>
     <button class="secondary wide" bindtap="showScoreCard"><image class="primary-plate" src="/assets/images/button-secondary-gold-3d.png" mode="scaleToFill"></image><text class="primary-label">生成分享成绩卡</text></button>
     <button class="ghost wide" bindtap="replay">重新倒带</button><button class="ghost wide" bindtap="back">返回案件大厅</button>
