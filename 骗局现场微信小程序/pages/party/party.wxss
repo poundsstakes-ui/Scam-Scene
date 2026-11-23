@@ -87,3 +87,14 @@
 .party-result .lesson { margin: 12rpx 0; padding: 12rpx; line-height: 1.4; }
 .party-result .wide { min-height: 80rpx; margin-top: 12rpx; }
 .pick-scene { display: block; width: 100%; height: auto; margin: 20rpx 0 8rpx; border-radius: 16rpx; }
+
+/* A single scrollable group conversation; actions stay outside the history. */
+.message-card { padding: 0; overflow: hidden; }
+.chat-history { height: 100%; min-height: 0; }
+.chat-list { padding: 18rpx; box-sizing: border-box; }
+.chat-bubble { display: flex; flex: none; align-items: flex-start; min-height: 0; margin-bottom: 20rpx; }
+.bubble-content { flex: 0 1 auto; max-width: 80%; min-width: 0; }
+.bubble-content .message-body { overflow: visible; word-break: break-all; white-space: pre-wrap; }
+.chat-mine { flex-direction: row-reverse; }
+.chat-mine .bubble-content { background: #DCEBD9; border-radius: 20rpx 6rpx 20rpx 20rpx; }
+.chat-mine .message-name { text-align: right; }

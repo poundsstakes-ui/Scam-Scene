@@ -87,9 +87,9 @@ function testPartyCasesHaveDistinctScripts() {
 function testPartyTranscriptIsRecoverable() {
   const fs = require('fs')
   const template = fs.readFileSync(path.resolve(__dirname, '../pages/party/party.wxml'), 'utf8')
-  assert.ok(template.includes('messages[messagePage]'), '讨论区必须支持逐条阅读消息')
-  assert.ok(template.includes('previousMessage') && template.includes('nextMessage'), '讨论记录应支持前后翻页')
-  assert.ok(!template.includes('<scroll-view class="messages"'), '讨论区按用户要求不能依赖滚动')
+  assert.ok(template.includes('wx:for="{{messages}}"'), '讨论区应连续展示所有消息')
+  assert.ok(template.includes('scroll-into-view="{{chatScrollTo}}"'), '讨论区应支持滚动并定位新消息')
+  assert.ok(!template.includes('previousMessage') && !template.includes('nextMessage'), '讨论记录不应翻页')
 }
 
 function testGeneratedVisualAssetsAreBound() {

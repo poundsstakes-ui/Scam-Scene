@@ -4,15 +4,8 @@ const { dealRoles, settle } = require('../../data/partyCore')
 const { requestHost } = require('../../utils/aiHost')
 const { returnToLobby } = require('../../utils/returnToLobby')
 const { isLargeText } = require('../../utils/textSize')
-function messagePages(name, text) {
-  const characters = Array.from(String(text))
-  const pages = []
-  for (let i = 0; i < characters.length; i += 60) pages.push({ name, text: characters.slice(i, i + 60).join('') })
-  return pages.length ? pages : [{ name, text: '' }]
-}
-
 Page({
-  data: { phase: 'pick', story: null, messages: [], messagePage: 0, vote: null, action: '', timeText: '10:00' },
+  data: { phase: 'pick', story: null, messages: [], chatScrollTo: '', vote: null, action: '', timeText: '10:00' },
   onLoad(query) {
     const story = cases.find(item => item.id === Number(query.id)) || cases[0]
     this.setData({ story, script: getPartyScript(story) })
@@ -28,7 +21,7 @@ Page({
     this.nextBotSeat = 1
     const role = this.data.script.roles[order[0]]
     const seats = order.map((_, index) => ({ number: index + 1, label: index === 0 ? '1号（你）' : (index + 1) + '号' }))
-    this.setData({ phase: 'room', role, seats, vote: null, action: '', caseActionText: '', caseActionNote: '', caseActionHistory: [], publicClueIds: [], hostBusy: false, aiReview: '', reviewSource: '', shared: false, bookOpen: false, messages: messagePages('主持人', this.data.script.roomOpening || '请交换线索，独立核实。其他席位由预设机器人扮演。'), messagePage: 0, clue: this.data.script.clues[order[0] % this.data.script.clues.length] })
+    this.setData({ phase: 'room', role, seats, vote: null, action: '', caseActionText: '', caseActionNote: '', caseActionHistory: [], publicClueIds: [], hostBusy: false, aiReview: '', reviewSource: '', shared: false, bookOpen: false, messages: [{ name: '主持人', text: this.data.script.roomOpening || '请交换线索，独立核实。其他席位由预设机器人扮演。' }], chatScrollTo: 'chat-message-0', clue: this.data.script.clues[order[0] % this.data.script.clues.length] })
     this.deadline = Date.now() + 600000
     this.timer = setInterval(() => this.tick(), 1000)
   },
@@ -40,9 +33,8 @@ Page({
   stopClock() { if (this.timer) clearInterval(this.timer); this.timer = null; this.deadline = null },
   toggleBook() { this.setData({ bookOpen: !this.data.bookOpen }) },
   append(name, text) {
-    const messagePage = this.data.messages.length
-    const messages = this.data.messages.concat(messagePages(name, text))
-    this.setData({ messages, messagePage })
+    const messages = this.data.messages.concat({ name, text: String(text) })
+    this.setData({ messages, chatScrollTo: 'chat-message-' + (messages.length - 1) })
   },
   onInput(e) { this.setData({ messageText: e.detail.value }) },
   sendMessage() {
@@ -82,8 +74,6 @@ Page({
       this.append(reply.source === 'model' ? 'AI主持人' : '主持人 · 预设', reply.text)
     })
   },
-  previousMessage() { this.setData({ messagePage: Math.max(0, this.data.messagePage - 1) }) },
-  nextMessage() { this.setData({ messagePage: Math.min(this.data.messages.length - 1, this.data.messagePage + 1) }) },
   toVote() {
     if (this.data.phase !== 'room') return
     const graph = this.data.script.caseGraph
