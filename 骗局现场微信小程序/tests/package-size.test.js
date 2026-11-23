@@ -1,0 +1,10 @@
+const assert = require('assert')
+const fs = require('fs')
+const path = require('path')
+const root = path.resolve(__dirname, '..')
+const config = JSON.parse(fs.readFileSync(path.join(root, 'project.config.json'), 'utf8'))
+assert(config.packOptions.ignore.some(item => item.type === 'folder' && item.value === 'tests'), 'tests should be excluded from the package')
+function size(dir) { return fs.readdirSync(dir, { withFileTypes: true }).reduce((sum, entry) => { const p = path.join(dir, entry.name); return sum + (entry.isDirectory() ? size(p) : fs.statSync(p).size) }, 0) }
+const bytes = ['assets', 'data', 'pages', 'utils'].reduce((sum, name) => sum + size(path.join(root, name)), 0) + ['app.js', 'app.json', 'app.wxss', 'sitemap.json'].reduce((sum, name) => sum + fs.statSync(path.join(root, name)).size, 0)
+assert(bytes < 1800 * 1024, `runtime sources should leave margin under 2MB: ${bytes} bytes`)
+console.log(`package-size.test.js: PASS (${Math.round(bytes / 1024)} KB runtime source)`)
